@@ -1,0 +1,309 @@
+#############################################################################
+# Git is one of the most popular version control systems.
+# It is a distributed version control system.
+# Changes do not have to be committed to the same central repository, which would require that every person working on the project to access that central repository and download the latest code in order to save changes.
+# Instead, everyone can have their own localized repository with its entire history.
+#
+# As it is, Git is a fairly straightforward tool that, in conjunction with services like Github (hosts Git repositories on the cloud), facilitates version control.
+#############################################################################
+
+# To find out the git version
+git --version
+
+## Creating a Git Repository for your project
+git init <project name i.e. myproject>
+
+# Tree view of Git Repository. In your project directory,
+tree .git
+
+## Creating bare Git repository
+## A bare Git repository is a repository that is created without a Working Tree. Why?
+## A bare Git repository is typically used as a Remote Repository that is sharing a repository among several different people. 
+## You don't do work right inside the remote repository so there's no Working Tree (the files in your project that you edit), just bare repository data.
+
+git init --bare <bare repository name i.e. barerepository>
+
+# Tree view of Git Bare Repository
+tree barerepository
+
+== Remote Repository ==
+# Cloning Remote Repository
+git clone <location of remote repository i.e. https://github.com/hubotio/hubot.git>
+# Linking the remote repository to the local repository
+git remote add origin <location of remote repository i.e. https://github.com/hubotio/hubot.git>
+
+# Globabl Configuration for User Name
+git config --global user.name <User Name i.e. "Manhee Park">
+
+# Globabl Configuration for User Name
+git config --global user.email <User Email i.e. "manhee@convergeti.com">
+
+## Global Configuration for Text Editor
+## Note: Make sure that TextPad.exe is discoverable in the system path.
+git config --global core.editor <Text Editor i.e. "TextPad">
+
+== Git Configuration Level ==
+- System 
+	- The config file is located at C:\Software\Git\mingw64\etc\gitconfig
+	
+- Global (Global overwrites System level configuration)
+	- The config file is located at C:\User\Manhee\.gitconfig
+# Overwriting Text Editor in the Global level
+git config --global core.editor "vim"
+
+# Run below to verify the Text Editor with VIM
+git config --global -e
+
+- Local (Local overwrites Global level configuration)
+	- The config file is located at C:\GIT_HOME\myproject\.git\config
+# Overwriting the Text Editor in the Local level
+git config --local core.editor "TextPad"
+# Run below to verify the Text Editor with TextPad
+git config --local -e
+
+List Configuration for each level
+# For all Configuration levels
+git config -l
+# For System Level Configuration
+git config --system -l
+# For Global Level Configuration
+git config --global -l
+# For Local Level Configuration
+git config --local -l
+
+== Configuring Alias ==
+# git config --<configuration level i.e. system, global or local> alias.<name> "<value>"
+git config --global alias.lga "log --graph --oneline --decorate --all"
+
+
+== Git Commit Process ==
+# Get the status of modified files
+git status
+git status -sb
+# Get the modified information of the given file from its baseline
+git diff <optional file name>
+# To stage a specific modified file
+git add <file name i.e. testfile1.txt>
+# To stage all modified files
+git add .
+# To stage the files associated with a specific index. This will allow the partial commit with the specific commit description.
+git add --patch
+# To Unstage the file
+git reset <branch i.e. HEAD> <file i.e. file2>
+# To commit the change to the previous commit. This is helpful if you forgot about committing a file from the previous commit.
+git commit --amend
+
+# Commit the change by specifying the description
+git commit -m "<description>"
+# Commit using Git GUI
+git gui
+# Generic Commit which requires to add the description on the pop up editor
+git commit
+# Generic commit with all and verbose option
+git commit -av
+
+== Viewing repository history ==
+## To show the repository history. In the repository, run the following command.
+git log --oneline --graph
+# To show the history of repository
+git show
+# To show the stat of the history of repository
+git show --stat
+# To check changes made in a specific commit
+git show <commit-id i.e. 38fa0b5>
+# view with history viewing Gui called gitk
+gitk --all
+
+# To revert completely to a prior commit. Removes the update to the local copy of file.
+git reset --hard <commit-id i.e. 38fa0b5>
+
+# Tree view of Git Repository
+tree .git
+
+# To view of reference log
+git reflog
+git reflog <branch>
+
+== View Object ==
+# Retrieve the hash code of object
+git hash-object <object i.e. file1.txt>
+# Show the type of object associated with the hash code
+git cat-file -t <hash code>
+# Print the content of object associated with the hash code 
+git cat-file -p <hash code>
+
+== Renaming the file name ==
+git mv <file name from i.e. file3.txt> <file name to i.e. testfile3.txt>
+
+== Removing the file ==
+git rm <file name i.e. testfile3.txt>
+
+== Ignore File ==
+# Create a .gitignore file under the project and add the ignore file name entries.
+	- The listed file will be ignored if it is presented in the sub-directory.
+	- .gitignore can be created for the sub-directory specific ignore list.
+	- Supports wild card character *, i.e. *.class, and more.
+
+# .gitignore file can be created in every sub directories.
+# .gitignore file supports wild card character *, i.e. *.class, and more.
+
+# Add the locally used files that are not required to be checked in or versioned.
+# Located at .git/info/exclude
+
+# Configuring globally excluding file path. ~/ refers to the user directory.
+# Create a .gitexcludes file in the user directory and specify the globally ignored file entries.
+git config --global core.excludesfile "~/.gitexcludes"
+
+== Cleaning Working Directory ==
+# Force to clean the untracted file
+git clean -f
+# Force to clean the untracted directory
+git clean -fd
+# Force to clean the directory and ignore files
+git clean -fdx
+# Clean the directory and ignore files interactively (i=interactive, d=directory, x=delete)
+git clean -idx
+
+== Create Branch ==
+# Create a branch
+git branch <branch name i.e. projectB>
+# Move the head to point to branch
+git checkout <branch name i.e. projectB>
+# Short cut command to create and move the head to branch
+git checkout -b <branch name i.e. projectB>
+# Move the head back to master
+git checkout master
+
+== Merge Branch ==
+# Merging master into branch, have the head point to your branch and run the merge command to merge with master
+git checkout <branch name i.e. myprojectB>
+git merge master
+
+# Merging branch into master
+git checkout master
+git merge <branch name i.e. myprojectB>
+
+# Branching Models
+- Top-of trunk
+	- 1 branch (working off master branch)
+
+- Master-and-topic
+	- 1+N branches (master and N topic branches. When the work is complete, merge the topic branch(es) to master)
+
+- Progressive-stability
+	- 2+n branches (master, develop and N topic branches. When the work is complete on topic branch(es), merge it into develop branch. When development is complete, merge it into master. Then, tag master and release it.
+
+== List Branch ==
+# List local branch with the verbose output
+git branch -v
+# List all branch include the remote branches
+git branch -av
+# List the branch hasn't merged
+git branch --no-merged
+# List the branch has merged
+git branch --merged
+
+== Delete Branch ==
+# Delete the branch if it is already been merged into master
+git branch -d <branch name>
+# Force to delete the branch
+git branch -D <branch name>
+
+== Filter Branch ==
+# Log the history in graph with the author information
+git lol
+# Filters the branch with executing the "<command>" of parent 10 of HEAD to current HEAD
+git filter-branch --env-filter "GIT_AUTHOR_NAME=Me" HEAD~10..HEAD
+# Clean check out by executing "<command>" from all tree 
+git filter-branch -f --tree-filter "rm -rf testfile1.txt" -- --all
+# Making the directory "script" as the root of directory
+git filter-branch -f --subdirectory-filter script --prune-empty -- --all
+
+
+
+== Rebase ==
+# Check out the branch and rebase it with master
+git checkout <branch name>
+git rebase master
+or
+git rebase master <branch name>
+or
+# Interactively rebasing branch with master
+git checkout <branch>
+git rebase -i master
+
+# Rebase it based on reference ID
+# To view the reference tree of branch
+git reflog <branch>
+# Rebase the working directory with the branch "featureA" @ reference 1
+git reset --hard <reference ID i.e. featureA@{1}>
+
+
+# If there is a conflict between master and branch while rebasing, it will go through the normal conflict resolution.
+
+== Undo Local Changes ==
+# Discard all local changes, but save them for possible re-use later
+git stash
+
+# Discarding local changes (permanently) to a file
+git checkout -- <file>
+
+# Discard all local changes to all files permanently
+git reset --hard
+
+== Remote ==
+# List the remote list
+git remote -v
+# Add a remote
+git remote add <name i.e. myprojectR> <URL i.e. https://test.myproject.remote>
+# Delete a remote
+git remote rm <name i.e. myprojectR>
+
+== Fetch, Pull ==
+# Fetch from remote
+git fetch
+# Merge the local changes to the remote
+git merge origin/master
+# Fetch from remote and merge the local changes to it
+git pull
+# Fetch from remote and merge the local changes to it, then rebase it.
+git pull --rebase
+
+== Tag ==
+# Creating tag on head
+git tag <tag name>
+# Creating tag on head with annotation
+git tag < tag name> -m "<annotation description>"
+# Creating tag on a specific commit
+git tag <tag name> <commit hashcode>
+
+== Push ==
+# Pushing the local changes to remote
+# NOTE: It will prompt for the user name and password. For password, use the GitHub generated personal access code.
+git push
+or
+git push -u origin master
+# Pushing the specific tag to remote
+git push <remote i.e. origin> <specific tag>
+# Pushing all of tags
+git push <remote i.e. origin> --tags
+
+== Undoing Merge ==
+# Revert HEAD to parent number 1
+git revert HEAD -m 1
+# Resets HEAD to the point specified in hash code
+git reset --hard <hash code>
+# Restores specified paths in the working tree with some content from a restore source  
+git restore --source <tree>
+# Restore all java files
+git restore "*.java"
+# Restore all files in the current directory
+git restore .
+
+=== Git Hub ===
+# Mention in the notification
+	- @user_name
+	- @<organization/team i.e. company/team>
+
+# Markdown - a text-to-HTML conversion tool for web writers. 
+	- https://www.markdownguide.org/cheat-sheet/

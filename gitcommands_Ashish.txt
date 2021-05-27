@@ -1,0 +1,236 @@
+GIT Basic commands:
+===================
+#######################################################################
+Config commands:
+-----------------
+ 	git config --global user.name "ashishu72"    \\This will be the name that shows up in the commits whenever you make a modification
+	git config --global user.email "ashish@convergeti.com"    \\Make sure to enter the email address that is associated with your github account!
+	git config --global core.autocrlf true   // configure carriage return
+	git config --list
+#######################################################################
+Configure store password (so that you don’t have to type it everytime) and editor (TextPad, etc), then list global config.
+git config --global credential.helper wincred
+git config --global core.editor vi
+#####################################################################
+
+How to create local Repo and map it to Remote Repo
+==================================================
+
+Start git bash
+
+If you are planning to connect to multiple repositiories using diferent user account then set config using --local option. Local cofig file superseed global config and can
+be found in local .git folder while global file is located in C://users/<user>/.gitconfig
+	
+1) Cd to local directory which you want to treat as a local repo
+2) git init   //To initialize local master repo 
+   and run above config commands to configure user name and email
+3) git add <filename>/<.>   	add files to index or staging area 
+4) git status					check status of working tree
+5) git commit -m 'message'		commit changes to the index	
+
+6) To connect local repo to remote repo using https:
+   git remote add origin <URL>
+   and if you want to use SSH key then follow insruction mentioned in hanning's doc to create a new ssh key, add it and then configure in github under settings option.
+   Ref: https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+   To connect local repo to remote repo:
+   git remote add origin git@github.com:ash-upa/TestRepo.git
+
+   git remote -v        To check remote connection
+   Make sure remote Repository exists before executing above remote commands. 
+   
+   Note: To remove a remote connection use following:
+   git remote rm origin
+   
+7) Run following to push local master branch content to the mapped master branch on github
+
+    git push -u origin master
+
+	-U parameter add stream tracking reference so in future just run git push 
+	run git show-ref master to check both are in sync	
+
+
+8) git pull					// pull latest from remote repo  
+	Note: Every time you update file(s) in any staging folder, you have to run git add <filName> or . to add files/folders in staging area and then run git status to get the current status
+	and finally git commit -m <message listing changes> to commit changes to the repo
+	
+9) View the history log of the repository
+	git log
+	
+	commit 0bc1d8130a597a781c33d960e64ba193add5fe42 (HEAD -> b2, tag: b2-v1.0, origin/b2)
+	Author: ash-upa <ashishu72@gmail.com>
+	Date:   Wed May 26 22:41:41 2021 -0400
+
+    addding files to branch b2
+
+  =================================================================================================================
+ 
+1) To clone a master remote repo:
+   ******************************
+   
+   First create a local directory and cd to it and run
+   git clone   <url>                //Clone repo into a new Directory
+	Note: If git clone <url> doesn't work then use following. This method id deprecated now:
+	
+	git clone https://username:userpassword@github.com/ConvergeTI/eIV.git
+	if password contains special characters then replace with encoded characters described in https://support.brightcove.com/special-characters-usernames-and-passwords
+	Imp Note: Using this way will cause your password to be written into the repo you just cloned in several different places, most notably the remote url. Do not do this if you are planning to share access to your clone with anyone!
+
+2) Create .gitignore file in root folder and add file, folder that you don't want to stage. Git will ignore the files or folders listed in this file.  
+========================================================================================================================
+
+How to create local branch and map it to Remote Repo branch
+------------------------------------------------------------
+	To List all branches local and remote run following
+	git branch -a
+
+1) To create a branch git branch <name>
+
+2) To move to branch git checkout <branchname> 
+    confirm by running git status
+	
+	Or shortcut to create and move to a new branch:
+	git checkout -b <branchName>
+
+3) Add files/folders in branch use git add/status/commit 
+    - Create a local directory outside master local repo directory and this local directory assume as Branch directory. Move all required files/subfolders under new branch folder and work on those files.
+	Use git checkout branchname cmd to move to branch, copy over updated files from local physical branch directory into local physical master repo directory and run git add cmd to add/commit all updated files to the branch 
+	in local repo.  (Ref: https://www.jquery-az.com/3-examples-of-git-create-new-branch/) 
+	Branch created locally first and then after adding files to the branch- This way of creating branch will contains Master branch data + additional files added in above step.
+	If you switch to master branch and ls cmd will show only the Master branch data. 
+	Note: there is no physical folder for a branch you’ve created. The ‘branch’ is a logic concept or reference point.
+    
+  	
+4) To Tag branch updates to repo: checkout branch and Run git tag tagname to tag branch with a specific tag name
+	Tagging is very useful if you are working on multiple branches or multiple people are working on a same branch	
+
+5) To push branch to remote repo:  git push --set-upstream origin branchname
+	
+6) Merging a branch to master. You need to checkout master first (have the ‘Head’ pointing to it).
+	# git checkout master
+	Switched to branch 'master'
+	Your branch is up to date with 'origin/master'.
+	# git merge b2
+
+7) Further if you add any file on local repo then after adding files/folders run git add . git commit -m <message> to commit new addition to local repo
+
+8) Then run git push to push files to the github to synchup
+	or if you add any file in online repo then run git pull and file will be merged in local branch
+	
+9) Delete a local branch :   git branch -d branchname
+   Delete a remote branch :  git push origin --delete <remotebranckname>
+
+10) To Compare two branches
+	- git branch -a cmd will list all local and remote branches.
+		* master
+		ashish
+		remotes/origin/HEAD -> origin/master
+		remotes/origin/master
+		remotes/origin/ashish
+
+	- git diff <local branch> <remote>/<remote branch>
+		Ex: git diff ashish origin/ashish
+		Note: Remove remotes/ from remote branch when comparing with other branch
+		
+		
+11) Team coordination: One person shoud have role to update master. Team works on Branch and once done ask reviewer to review the changes by putting Pull request via GitHub. reviewer review the changes and merge them to Master   Branch.
+  		
+==================================================================================================================================================================  
+
+Tagging:
+##########
+
+Git has the ability to tag specific points in a repository’s history as being important. Typically, people use this functionality to mark release points (v1.0, v2.0 and so on). 
+
+Listing Your Tags:
+------------------
+Listing the existing tags in Git is straightforward. Just type git tag (with optional -l or --list):
+$ git tag
+v1.0
+v2.0
+
+Search for tags:
+-----------------
+You can also search for tags that match a particular pattern. The Git source repo, for instance, contains more than 500 tags. If you’re interested only in looking at the 1.8.5 series, you can run this:
+$ git tag -l "v1.8.5*"
+
+Creating Tags:
+--------------
+Git supports two types of tags: lightweight and annotated.
+A lightweight tag is very much like a branch that doesn’t change — it’s just a pointer to a specific commit.
+Annotated tags, however, are stored as full objects in the Git database. They’re checksummed; contain the tagger name, email, and date; have a tagging message; and can be signed
+and verified with GNU Privacy Guard (GPG). It’s generally recommended that you create annotated tags so you can have all this information; but if you want a temporary tag or for some
+reason don’t want to keep the other information, lightweight tags are available too.
+Annotated Tags:
+---------------
+Creating an annotated tag in Git is simple. The easiest way is to specify -a when you run the tag command:
+$ git tag -a v1.4 -m "my version 1.4"
+$ git tag -l
+v0.1
+v1.3
+v1.4
+
+You can see the tag data along with the commit that was tagged by using the git show command:
+
+$ git show v1.4
+
+Tagging later:
+---------------
+You can also tag commits after you’ve moved past them. Suppose your commit history looks like this:
+Example:
+
+$ git log --pretty=oneline
+
+15027957951b64cf874c3557a0f3547bd83b3ff6 Merge branch 'experiment'
+a6b4c97498bd301d84096da251c98a07c7723e65 Create write support
+0d52aaab4479697da7686c15f77a3d64d9165190 One more thing
+6d52a271eda8725415634dd79daabbc4d9b6008e Merge branch 'experiment'
+9fceb02d0ae598e95dc970b74767f19372d61af8 Update rakefile
+
+Now, suppose you forgot to tag the project at v1.2, which was at the “Update rakefile” commit. You can add it after the fact. To tag that commit, you specify the commit
+checksum (or part of it) at the end of the command:
+
+$ git tag -a v1.2 9fceb02
+
+You can see that you’ve tagged the commit:
+$ git tag
+v0.1
+v1.2
+v1.3
+
+$ git show v1.2
+
+tag v1.2
+Tagger: Scott Chacon <schacon@gee-mail.com>
+Date:   Mon Feb 9 15:32:16 2009 -0800
+
+version 1.2
+commit 9fceb02d0ae598e95dc970b74767f19372d61af8
+Author: Magnus Chacon <mchacon@gee-mail.com>
+Date:   Sun Apr 27 20:43:35 2008 -0700
+
+ Update rakefile
+
+Sharing Tags:
+==============
+By default, the git push command doesn’t transfer tags to remote servers. You will have to explicitly push tags to a shared server after you have created them. 
+This process is just like sharing remote branches — you can run git push origin <tagname>.
+
+$ git push origin v1.5
+
+If you have a lot of tags that you want to push up at once, you can also use the --tags option to the git push command. This will transfer all of your tags to the remote server that are not already there.
+
+$ git push origin --tags
+
+Deleting Tags:
+---------------
+To delete a tag on your local repository, you can use git tag -d <tagname>. For example, we could remove our lightweight tag above as follows:
+
+$ git tag -d v1.4-lw
+Deleted tag 'v1.4-lw' (was e7d5add)
+
+Note that this does not remove the tag from any remote servers.
+Way to delete a remote tag is with:
+
+$ git push origin --delete <tagname>
+
+=====================================================================================================================================================================================

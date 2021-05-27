@@ -1,0 +1,115 @@
+Cloning the repo to local box
+==============================
+
+1) Start git bash
+   Create a base directiry for local repo say c:\git\eIV and cd to c:\git\eIV
+	
+    
+2)  Cloning: To clone the repository.
+	git clone <url>
+	git clone https://github.com/ConvergeTI/eIV.git
+	or 
+	git clone https://username:userpassword@github.com/ConvergeTI/eIV.git
+	cd to eIV 
+	run git branch -v 
+	* master 67ab7a0 Merge branch 'master' of https://github.com/ash-upa/eIV
+
+3)  Configure user and email:
+	git config --global user.name "ashishu72"    \\This will be the name that shows up in the commits whenever you make a modification
+    git config --global user.email "ashish@convergeti.com"    \\Make sure to enter the email address that is associated with your github account!
+	git config --global core.editor "Notepad++"  
+	git config --global core.autocrlf true   // configure carriage return
+	git config --global credential.helper wincred  //To Store password
+	git config --list	// to check configured variables
+
+7)  Setting up Remotes:
+    ========================
+    When you first clone a repository, git will automatically create a remote named 'origin' for you If not then run following cmds to create one. 
+	Now remember that this remote will point to YOUR git hub repository:
+
+	git remote -v             to list repo on github for ur user 
+
+	To manually map with local repo:
+    
+	git remote add origin https://github.com/ash-upa/eIV.git 
+	
+	By default when github repository get updated yours not updated automatically.To remedy this, we want to setup a remote that will track the original rep. 
+	Using Git Bash, navigate to your project's directory. 
+	Once you are in the right place, you should see (master) appear after the current directory's name. This represents the currently active branch.
+	EVERY ACTION YOU TAKE WILL BE APPLIED TO THE CURRENTLY ACTIVE BRANCH.
+
+How to pull Branch from Git:
+============================
+1) First, clone a remote Git repository and cd into it:
+	$ git clone git://example.com/myproject
+	$ cd myproject
+	Next, look at the local branches in your repository:
+
+2)	$ git branch
+	* master
+
+3)	But there are other branches hiding in your repository! You can see these using the -a flag:
+	$ git branch -a
+	* master
+	  remotes/origin/HEAD
+	  remotes/origin/master
+	  remotes/origin/v1.0-stable
+	  remotes/origin/experimental
+	
+4)	If you just want to take a quick peek at an upstream branch, you can check it out directly:
+	$ git checkout origin/experimental
+
+5) 	But if you want to work on that branch, you'll need to create a local tracking branch which is done automatically by:
+	$ git checkout experimental
+ 
+ How to clone a branch directly:
+ ================================
+	git clone --single-branch --branch <branchname> <remote-repo>
+	ex: git clone --single-branch --branch ashish https://github.com/ConvergeTI/eIV.git
+
+
+
+																			############################	
+																			  Rules for eIV repository
+																			############################	
+============================================Existing eIV Repo================================================================================================================
+Create seperate folder for every master/Branch and run git clone to clone the branch/master then after updates to local repo run git push to update remote or git pull to pull remote latest data
+In this approach there is no link between Branches and Master. Master and branches are having different local repositories. If you want to merge an eIV branch with master then checkout master first. 
+then run git branch -a
+*master
+  remotes/origin/Build_4_7_5
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/ashish
+  remotes/origin/hema
+  remotes/origin/master
+  remotes/origin/paul
+  remotes/origin/random
+ This way you have link to remote branches only. So to merge master with a branch, you have to checkout and pull the branch first and then checkout master and merge the branch.    
+===============================================================================================================================================================================
+1) Update local Branch folder as required
+2) Run git config --list to check configuration an run git config --local user.name "ashishu72" and git config --local user.email "ashish@convergeti.com" if required
+3) git status to check local repo and add updated files to local repo using git add . and git commit -m "<msg>"
+4) run git diff as described below to see the difference in local/remote branches
+5) git push to push the local changes to remote if remote branch is also got updated then first git pull and then git push
+6) If git remote Branch got updated online then run git pull. This will pull the updates in the staging area and sync both branches.      
+6) Run git diff again to check whether two remote/local branches are in sync or not.
+========================================================================================================================================
+ 
+How to compare two branches local/remote
+#########################################
+
+1) git branch -a cmd will list all local and remote branches.
+	* master
+	ashish
+	remotes/origin/HEAD -> origin/master
+	remotes/origin/master
+	remotes/origin/ashish
+
+2) git diff <local branch> <remote>/<remote branch>
+	Ex: git diff ashish origin/ashish
+	Note: Remove remotes/ from remote branch when comaring with other branch 
+	
+
+
+
+ 
